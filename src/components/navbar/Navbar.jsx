@@ -20,7 +20,7 @@ export default function Navbar() {
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav mb-2 ms-auto mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link active" aria-current="page" to={'/'}>
                 Home
