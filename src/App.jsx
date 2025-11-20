@@ -8,7 +8,6 @@ import User from './pages/user/User'
 import AddUser from './pages/user/AddUser'
 
 function App() {
-
   return (
     <>
       <Navbar/>
