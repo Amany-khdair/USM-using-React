@@ -1,29 +1,11 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+//This useFetch is only available for "GET"
 import "./users.css";
+import useFetch from "../../hooks/useFetch";
 export default function Users() {
-  const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState("");
-  const getUsers = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_BURL}/users`);
-      //console.log(response);
-      setUsers(response.data.users);
-    } catch (err) {
-      //console.log(err.message);
-      setIsError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
+  const {isError, isLoading, data} = useFetch('users');
+  
   if (isLoading) {
-    return <h2>Wait ....</h2>;
+    return <h2>Loading, Please Wait ....</h2>;
   }
 
   if (isError) {
@@ -44,7 +26,7 @@ export default function Users() {
               </tr>
             </thead>
             <tbody className="user-data">
-              {users.map((user) => (
+              {data.users.map((user) => (
                 <tr key={user.id}>
                   <td>{user.name}</td>
                   <td>{user.age}</td>
