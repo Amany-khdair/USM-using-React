@@ -1,6 +1,7 @@
 //This useFetch is only available for "GET"
 import "./users.css";
 import useFetch from "../../hooks/useFetch";
+import { Link } from "react-router-dom";
 export default function Users() {
   const {isError, isLoading, data} = useFetch('users');
   
@@ -18,23 +19,16 @@ export default function Users() {
           <table className="table table-striped table-hover align-middle text-center">
             <thead>
               <tr>
-                <th className="col-2">Name</th>
-                <th className="col-1">Age</th>
-                <th className="col-3">Email</th>
-                <th className="col-3">Image</th>
+                <th className="col-2">Name</th>                
                 <th className="col-2">Action</th>
               </tr>
             </thead>
             <tbody className="user-data">
               {data.users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.name}</td>
-                  <td>{user.age}</td>
-                  <td>{user.email}</td>
+                <tr key={user.id} style={{ cursor: "pointer" }} onClick={() => window.location.href = `/users/${user.id}`}>
+                  <td>{user.name}</td>                   
                   <td>
-                    <img src={user.imageUrl} width="150px" />
-                  </td>
-                  <td>
+                    <Link className="btn btn-outline-success me-2" to={`/users/${user.id}`} onClick={(e) => e.stopPropagation()}>Details</Link>
                     <button className="btn btn-outline-danger">Delete</button>
                   </td>
                 </tr>
