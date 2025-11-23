@@ -55,14 +55,23 @@ export default function Users() {
           <table className="table table-striped table-hover align-middle text-center">
             <thead>
               <tr>
-                <th className="col-2">Name</th>                
+                <th className="col-2">Name</th>   
+                <th className="col-3">Image</th>
                 <th className="col-2">Action</th>
               </tr>
             </thead>
             <tbody className="user-data">
               {data.users.map((user) => (
                 <tr key={user.id} style={{ cursor: "pointer" }} onClick={() => window.location.href = `/users/${user.id}`}>
-                  <td>{user.name}</td>                   
+                  <td>{user.name}</td>      
+                 <td>
+                  <img 
+                    src={user.imageUrl} 
+                    className="img-fluid rounded shadow-sm"
+                    style={{ width: "80px", height: "80px", objectFit: "cover" }} 
+                  />
+                </td>
+
                   <td>
                     <Link className="btn btn-outline-success me-2" to={`/users/${user.id}`} onClick={(e) => e.stopPropagation()}>Details</Link>
                     <button onClick={(e)=>{ e.stopPropagation();deleteUser(user.id);}} className="btn btn-outline-danger">Delete</button>
