@@ -1,9 +1,12 @@
 
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddUser() {
+    const navigate = useNavigate();
+    const [serverErrors, setServerErrors] = useState(null);
     const [preview, setPreview] = useState(null);
     const {register, handleSubmit, formState:{errors}} = useForm();
     const addUser = async (values)=>{
@@ -13,28 +16,47 @@ export default function AddUser() {
         formData.append("age", values.age);
         formData.append("image", values.image[0]);
         //console.log(values);
-        const response = await axios.post(`${import.meta.env.VITE_BURL}/users`, formData);
-        console.log(response);
+        try{
+            const response = await axios.post(`${import.meta.env.VITE_BURL}/users`, formData);
+            if(response.status == 200){
+                navigate('/users');
+            }
+        }catch(err){
+            //console.log(err.response.data.errors);
+            if(err.status == 400){
+                console.log("test");
+                setServerErrors(err.response.data.errors);
+            }           
+        }        
     }
     const handleImagePreview = (event)=>{
       //  console.log("hhhh");
        // console.log(event.target.files[0]);
        setPreview(URL.createObjectURL(event.target.files[0]));
     }
+    useEffect(()=>{
+        console.log("test123");
+    }, [])
   return (
     
     <div className='container'>
+        {/* {console.log(serverErrors.Age[0])} */}
+        {console.log()}
+        {serverErrors?.length > 0? serverErrors.map((error)=><div className='text-danger'>{error.Age}</div>):''}
         <form onSubmit={handleSubmit(addUser)}>
             <div className="form-floating mb-3">
-                <input {...register('name')} type="text" className="form-control" id="floatingInput" placeholder="User Name" />
+                <input {...register('name')} type="text" className= "form-control" id="floatingInput" placeholder="User Name" />
+                {serverErrors?.Name?<div className='text-danger'>{serverErrors.Name[0]}</div>: ''}
                 <label htmlFor="floatingInput">User Name</label>
             </div>
             <div className="form-floating mb-3">
                 <input {...register('email')} type="email" className="form-control" id="floatingEmail" placeholder="Email" />
+                {serverErrors?.Email?<div className='text-danger'>{serverErrors.Email[0]}</div>: ''}
                 <label htmlFor="floatingPassword">Email</label>
             </div>
             <div className="form-floating mb-3">
                 <input {...register('age')} type="number" className="form-control" id="floatingInput" placeholder="Age" />
+                {serverErrors?.Age?<div className='text-danger'>{serverErrors.Age[0]}</div>: ''}
                 <label htmlFor="floatingInput">User Age</label>
             </div>
             <div className="form-floating mb-3">
