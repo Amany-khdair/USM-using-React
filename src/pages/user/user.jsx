@@ -22,6 +22,7 @@ export default function User() {
       <div className="card shadow-lg p-4" style={{ maxWidth: "450px", width: "100%" }}>
 
         <div className="text-center">
+          {/* {console.log("IMAGE:", data.data.image)} */}
           <img src={data.data.image} alt={data.data.name} className="rounded-circle mb-4"
             style={{
               width: "150px",
