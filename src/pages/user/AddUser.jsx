@@ -1,11 +1,25 @@
 
+import axios from 'axios';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function AddUser() {
-
+    const [preview, setPreview] = useState(null);
     const {register, handleSubmit, formState:{errors}} = useForm();
-    const addUser = (test)=>{
-        console.log(test);
+    const addUser = async (values)=>{
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("email", values.email);
+        formData.append("age", values.age);
+        formData.append("image", values.image[0]);
+        //console.log(values);
+        const response = await axios.post(`${import.meta.env.VITE_BURL}/users`, formData);
+        console.log(response);
+    }
+    const handleImagePreview = (event)=>{
+      //  console.log("hhhh");
+       // console.log(event.target.files[0]);
+       setPreview(URL.createObjectURL(event.target.files[0]));
     }
   return (
     
@@ -22,6 +36,11 @@ export default function AddUser() {
             <div className="form-floating mb-3">
                 <input {...register('age')} type="number" className="form-control" id="floatingInput" placeholder="Age" />
                 <label htmlFor="floatingInput">User Age</label>
+            </div>
+            <div className="form-floating mb-3">
+                <input {...register('image')} onChange={handleImagePreview} type="file" className="form-control" id="floatingInput" placeholder="Select Your Image" />
+                {preview? <img src={preview} width="150px" /> : ''}
+                <label htmlFor="floatingInput">User Image</label>
             </div>
             <button className='btn btn-outline-success'>Add User</button>            
         </form>
